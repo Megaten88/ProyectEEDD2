@@ -132,6 +132,7 @@ public class Node {
     public void deleteChild(Node node) {
         if (this.children.indexOf(node) != -1) {
             this.children.remove(this.children.indexOf(node));
+            sortChildren();
         }
         sortChildren();
     }

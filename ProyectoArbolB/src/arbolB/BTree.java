@@ -136,7 +136,8 @@ public class BTree {
         }
         if (node.getChildren().isEmpty() || this.promote) {
             node.deleteKey(position);
-            if (node.getKeys().size() < ((this.order / 2) - 1)) {
+            System.out.println(node.getKeys().size() + "  " + ((this.order / 2) - 1));
+            if (node.getKeys().size() < ((this.order / 2) - 1) || node.getKeys().isEmpty()) {
                 redistribute(node, key);
             }
             this.promote = false;
@@ -175,12 +176,13 @@ public class BTree {
                         node.getChildren().add(adyacent.getChildren().get(adyacent.getChildren().size() - 1));
                         adyacent.getChildren().get(adyacent.getChildren().size() - 1).setParent(node);
                         adyacent.deleteChild(adyacent.getChildren().size() - 1);
+                        adyacent.sortChildren();
                     }
                     take = true;
                 }
             }
             if (position + 1 < node.getParent().getChildren().size() && !take) {
-                Node adyacent = node.getParent().getChildren().get(position);
+                Node adyacent = node.getParent().getChildren().get(position+1);
                 if (node.getParent().getChildren().get(position).canShare()) {
                     Comparable keyTake = node.getParent().getKeys().get(position);
                     node.addKey(keyTake);
@@ -192,6 +194,7 @@ public class BTree {
                         node.getChildren().add(adyacent.getChildren().get(0));
                         adyacent.getChildren().get(0).setParent(node);
                         adyacent.deleteChild(0);
+                        adyacent.sortChildren();
                     }
 
                 } else {
@@ -200,29 +203,28 @@ public class BTree {
             }
         } else if (node.getKeys().isEmpty()) {
             root = node.getChildren().get(0);
-            root.setParent(null);
+//            root.setParent(null);
         }
     }
 
     private void concat(Node node, int position) {
-        System.out.println("Here AM I");
         if (position - 1 >= 0) {
-
             Node adyacent = node.getParent().getChildren().get(position - 1);
             for (int i = 0; i < node.getKeys().size(); i++) {
                 adyacent.addKey(node.getKeys().get(i));
             }
             for (int i = 0; i < node.getChildren().size(); i++) {
                 node.getChildren().get(i).getParent().setParent(adyacent);
+                adyacent.getChildren().add(node.getChildren().get(i));
             }
-            adyacent.setChildren(node.getChildren());
+            adyacent.sortChildren();
             node.getParent().deleteChild(position);
             adyacent.addKey(node.getParent().getKeys().get(position - 1));
             this.promote = true;
             delete(node.getParent(), node.getParent().getKeys().get(position - 1));
 
         } else if (position + 1 < node.getParent().getChildren().size()) {
-            Node adyacent = node.getParent().getChildren().get(position + 1);
+            Node adyacent = node.getParent().getChildren().get(position+1);
             for (int i = 0; i < node.getKeys().size(); i++) {
                 adyacent.addKey(node.getKeys().get(i));
             }
@@ -232,7 +234,9 @@ public class BTree {
             }
             node.getParent().deleteChild(position);
             adyacent.addKey(node.getParent().getKeys().get(position));
-            promote = true;
+            adyacent.sortChildren();
+            node.sortChildren();
+            this.promote = true;
             delete(node.getParent(), node.getParent().getKeys().get(position));
         }
     }
@@ -248,7 +252,6 @@ public class BTree {
                 break;
             }
         }
-        System.out.println(temp.getKeys());
         if (temp.getLevel() != -1) {
             for (int i = 0; i < node.getChildren().size(); i++) {
                 if (temp.getKeys().indexOf(key) != -1) {
