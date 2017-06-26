@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tda.fsrf;
+package arbolB;
 
 import java.io.EOFException;
 import java.io.File;
@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +29,7 @@ public class FSRF {
 
     private ArrayList<Integer> AvailList;
     private ArrayList<Person> PersonList;
-    private ArrayList<Index> IDIndex;
+    private ArrayList<Key> IDIndex;
     RandomAccessFile file;
 
     public FSRF() {
@@ -67,8 +68,8 @@ public class FSRF {
                         this.AvailList.add(current_rrn);
                     }
                     
-                    this.IDIndex.add(new Index(tempID,current_rrn));
-                    
+                    this.IDIndex.add(new Key(tempID,current_rrn));
+                    Collections.sort(this.IDIndex);
                     current_rrn++;
 
                 };
