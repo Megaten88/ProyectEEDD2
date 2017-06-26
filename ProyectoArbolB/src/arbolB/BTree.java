@@ -6,6 +6,7 @@
 package arbolB;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -92,8 +93,10 @@ public class BTree {
     }
 
     public void insert(Node node, Comparable key) {
-        if (this.allkeys.indexOf(key) == -1) {
+        if (key instanceof Key && this.allkeys.indexOf(key) == -1) {
             this.allkeys.add(key);
+            Collections.sort(allkeys);
+            key = ((Key) key).getKey();
         }
         if (node.getLevel() == -1) {
             node.setLevel(this.level);
@@ -127,6 +130,7 @@ public class BTree {
     public void delete(Node node, Comparable key) {
         if (this.allkeys.indexOf(key) != -1) {
             this.allkeys.remove(key);
+            key = ((Key) key).getKey();
         }
         int position = 0;
         for (position = 0; position < node.getKeys().size(); position++) {
@@ -186,9 +190,9 @@ public class BTree {
                     Comparable keyTake = node.getParent().getKeys().get(position);
                     node.addKey(keyTake);
                     node.getParent().deleteKey(position);
-                    Comparable keyParent = adyacent.getKeys().get(position+1);
+                    Comparable keyParent = adyacent.getKeys().get(position + 1);
                     node.getParent().addKey(keyParent);
-                    adyacent.deleteKey(position+1);
+                    adyacent.deleteKey(position + 1);
                     if (!adyacent.getChildren().isEmpty()) {
                         node.getChildren().add(adyacent.getChildren().get(0));
                         adyacent.getChildren().get(0).setParent(node);
@@ -202,7 +206,7 @@ public class BTree {
             }
         } else if (node.getKeys().isEmpty()) {
             root = node.getChildren().get(0);
-//            root.setParent(null);
+            root.setParent(null);
         }
     }
 
@@ -222,8 +226,8 @@ public class BTree {
             this.promote = true;
             delete(node.getParent(), node.getParent().getKeys().get(position - 1));
 
-        } else if (position + 1 < node.getParent().getChildren().size()) { 
-            Node adyacent = node.getParent().getChildren().get(position+1);
+        } else if (position + 1 < node.getParent().getChildren().size()) {
+            Node adyacent = node.getParent().getChildren().get(position + 1);
             for (int i = 0; i < node.getKeys().size(); i++) {
                 adyacent.addKey(node.getKeys().get(i));
             }
@@ -241,9 +245,6 @@ public class BTree {
     }
 
     public Node search(Node node, Comparable key) {
-        if (this.allkeys.indexOf(key) == -1) {
-            return null;
-        }
         Node temp = new Node(node.getOrder());
         for (int i = 0; i < node.getKeys().size(); i++) {
             if (key.compareTo(node.getKeys().get(i)) == 0) {
