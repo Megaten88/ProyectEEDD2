@@ -118,18 +118,22 @@ public class Node {
         Collections.sort(children, comparator);
     }
 
-    public void deleteKey(Comparable key) {
-        this.keys.remove(key);
+    public void deleteKey(int position) {
+        if(position>=0 && this.keys.size()>0 && position < this.keys.size()){
+            this.keys.remove(position);
+        }
     }
 
     public void deleteChild(int position) {
         this.children.remove(position);
+        sortChildren();
     }
 
     public void deleteChild(Node node) {
         if (this.children.indexOf(node) != -1) {
             this.children.remove(this.children.indexOf(node));
         }
+        sortChildren();
     }
 
     public Node split() {
@@ -157,17 +161,22 @@ public class Node {
         return right;
     }
 
-    public boolean isUnderflow() {
+    public boolean canShare() {
         if (this.order % 2 == 0) {
-            return this.keys.size() < (this.order / 2) - 1;
+            return this.keys.size() > (this.order / 2) - 1;
         } else {
-            return this.keys.size() < (this.order / 2);
+            return this.keys.size() > (this.order / 2);
         }
     }
-
+    
+    public boolean isLeaf(){
+        return this.children.isEmpty();
+    }
+    
+    
     @Override
     public String toString() {
-        return "Node{" + "keys=" + keys + '}';
+        return keys+"";
     }
 
 }
