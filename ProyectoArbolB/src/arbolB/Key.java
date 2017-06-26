@@ -5,11 +5,13 @@
  */
 package arbolB;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Agile PC
  */
-public class Key implements Comparable<Key> {
+public class Key implements Comparable<Key>, Serializable{
 
     private int key;
     private int rrn;
@@ -46,5 +48,8 @@ public class Key implements Comparable<Key> {
         return ""+key;
     }
     
+    public String toString2(){
+        return "Key: " + this.key + "; RRN: "+this.rrn+"\n";
+    }
     
 }

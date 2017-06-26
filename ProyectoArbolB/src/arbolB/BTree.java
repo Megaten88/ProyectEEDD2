@@ -5,6 +5,7 @@
  */
 package arbolB;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -12,11 +13,12 @@ import java.util.Collections;
  *
  * @author Agile PC
  */
-public class BTree {
+public class BTree implements Serializable{
 
     private Node root;
     private int order;
     private boolean promote;
+    // our inner index in tree
     private ArrayList<Comparable> allkeys;
     private int level;
 
@@ -156,6 +158,21 @@ public class BTree {
             son.getKeys().add(keyTake);
             delete(son, key);
         }
+        if(root.getChildren().size()>1){
+           Comparable rootLast = root.getKeys().get(root.getKeys().size()-1);
+           Comparable lastSonFirst = root.getChildren().get(root.getChildren().size()-1).getKeys().get(0); 
+           if(rootLast.compareTo(lastSonFirst)>0){
+              Comparable swap = rootLast;
+              rootLast = lastSonFirst;
+              lastSonFirst = swap;
+              root.getKeys().add(root.getKeys().size()-1, rootLast);
+              root.getKeys().remove(lastSonFirst);
+              root.sortKeys();
+              root.getChildren().get(root.getChildren().size()-1).getKeys().add(0,lastSonFirst);
+              root.getChildren().get(root.getChildren().size()-1).getKeys().remove(rootLast);
+              root.getChildren().get(root.getChildren().size()-1).sortKeys();
+           }
+        }
     }
 
     private void redistribute(Node node, Comparable key) {
@@ -266,4 +283,5 @@ public class BTree {
         }
         return temp;
     }
+    
 }

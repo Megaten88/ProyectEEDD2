@@ -79,7 +79,7 @@ public class Main {
         System.out.println("Todas las llaves: " + tree.getAllkeys());
         System.out.println("------------COMPARISONS-------------");
         System.out.println("Todas las llaves: " + tree.getAllkeys());
-        int delete = 0;
+        int delete = 21;
         Key returnKey = null;
         for(Comparable key: tree.getAllkeys()){
             if(key instanceof Key){
@@ -94,7 +94,6 @@ public class Main {
                 }
             }
         }
-        System.out.println(delete);
         Node node = tree.search(tree.getRoot(), delete);
         tree.delete(node, returnKey);
         System.out.println(tree.getRoot().toString());
@@ -102,7 +101,7 @@ public class Main {
         System.out.print(tree.getRoot().getChildren().get(0).getChildren().toString() + " ");
         System.out.print(tree.getRoot().getChildren().get(1).getChildren().toString() + " ");
 //        System.out.print(tree.getRoot().getChildren().get(2).getChildren().toString() + " ");
-        System.out.println("");
+
 
 //        node = tree.search(tree.getRoot(), 0);
 //        tree.delete(node, 0);
