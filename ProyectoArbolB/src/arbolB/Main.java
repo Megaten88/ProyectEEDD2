@@ -74,18 +74,26 @@ public class Main {
         System.out.println(tree.getRoot().getChildren().toString());
         System.out.print(tree.getRoot().getChildren().get(0).getChildren().toString() + " ");
         System.out.print(tree.getRoot().getChildren().get(1).getChildren().toString() + " ");
-         System.out.println(tree.getRoot().getChildren().get(2).getChildren().toString() + " ");
-         
-        System.out.println("Todas las llaves: " +  tree.getAllkeys());
+        System.out.println(tree.getRoot().getChildren().get(2).getChildren().toString() + " ");
+
+        System.out.println("Todas las llaves: " + tree.getAllkeys());
         System.out.println("------------COMPARISONS-------------");
-        Node node = tree.search(tree.getRoot(), 3);
-        tree.delete(node, 3);
+        Node node = tree.search(tree.getRoot(), 21);
+        tree.delete(node, 21);
         System.out.println(tree.getRoot().toString());
         System.out.println(tree.getRoot().getChildren().toString());
         System.out.print(tree.getRoot().getChildren().get(0).getChildren().toString() + " ");
         System.out.print(tree.getRoot().getChildren().get(1).getChildren().toString() + " ");
+//        System.out.print(tree.getRoot().getChildren().get(2).getChildren().toString() + " ");
         System.out.println("");
-//         System.out.println(tree.getRoot().getChildren().get(2).getChildren().toString() + " ");
+
+//        node = tree.search(tree.getRoot(), 0);
+//        tree.delete(node, 0);
+//        System.out.println(tree.getRoot().toString());
+//        System.out.println(tree.getRoot().getChildren().toString());
+//        System.out.print(tree.getRoot().getChildren().get(0).getChildren().toString() + " ");
+//        System.out.print(tree.getRoot().getChildren().get(1).getChildren().toString() + " ");
+//        System.out.println("");
 //         node = tree.search(tree.getRoot(),0);
 //        tree.delete(node, 0);
 //        System.out.println(tree.getRoot().toString());
@@ -93,6 +101,6 @@ public class Main {
 //        System.out.print(tree.getRoot().getChildren().get(0).getChildren().toString() + " ");
 //        System.out.print(tree.getRoot().getChildren().get(1).getChildren().toString() + " ");
 //         System.out.println(tree.getRoot().getChildren().get(2).getChildren().toString() + " ");
-   }
+    }
 
 }

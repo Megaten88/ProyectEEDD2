@@ -111,22 +111,34 @@ public class Node {
     }
 
     public void sortKeys() {
-        Collections.sort(keys);
+        if (!this.keys.isEmpty()) {
+            Collections.sort(keys);
+        }
     }
 
     public void sortChildren() {
-        Collections.sort(children, comparator);
+       if(!this.children.isEmpty()){
+            Collections.sort(children, comparator);
+       }
     }
 
     public void deleteKey(int position) {
-        if(position>=0 && this.keys.size()>0 && position < this.keys.size()){
+        if (position >= 0 && this.keys.size() > 0 && position < this.keys.size()) {
             this.keys.remove(position);
+            sortKeys();
         }
     }
 
     public void deleteChild(int position) {
-        this.children.remove(position);
-        sortChildren();
+        for (int i = 0; i < this.children.size(); i++) {
+            if(this.children.get(i).getKeys().isEmpty()){
+                this.children.remove(i);
+            }
+        }
+        if (this.children.indexOf(position)!= -1) {
+            this.children.remove(position);
+            sortChildren();
+        }
     }
 
     public void deleteChild(Node node) {
@@ -134,7 +146,6 @@ public class Node {
             this.children.remove(this.children.indexOf(node));
             sortChildren();
         }
-        sortChildren();
     }
 
     public Node split() {
@@ -169,15 +180,14 @@ public class Node {
             return this.keys.size() > (this.order / 2);
         }
     }
-    
-    public boolean isLeaf(){
+
+    public boolean isLeaf() {
         return this.children.isEmpty();
     }
-    
-    
+
     @Override
     public String toString() {
-        return keys+"";
+        return keys + "";
     }
 
 }

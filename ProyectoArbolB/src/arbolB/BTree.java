@@ -136,7 +136,6 @@ public class BTree {
         }
         if (node.getChildren().isEmpty() || this.promote) {
             node.deleteKey(position);
-            System.out.println(node.getKeys().size() + "  " + ((this.order / 2) - 1));
             if (node.getKeys().size() < ((this.order / 2) - 1) || node.getKeys().isEmpty()) {
                 redistribute(node, key);
             }
@@ -182,14 +181,14 @@ public class BTree {
                 }
             }
             if (position + 1 < node.getParent().getChildren().size() && !take) {
-                Node adyacent = node.getParent().getChildren().get(position+1);
+                Node adyacent = node.getParent().getChildren().get(position);
                 if (node.getParent().getChildren().get(position).canShare()) {
                     Comparable keyTake = node.getParent().getKeys().get(position);
                     node.addKey(keyTake);
                     node.getParent().deleteKey(position);
-                    Comparable keyParent = adyacent.getKeys().get(0);
+                    Comparable keyParent = adyacent.getKeys().get(position+1);
                     node.getParent().addKey(keyParent);
-                    adyacent.deleteKey(0);
+                    adyacent.deleteKey(position+1);
                     if (!adyacent.getChildren().isEmpty()) {
                         node.getChildren().add(adyacent.getChildren().get(0));
                         adyacent.getChildren().get(0).setParent(node);
@@ -223,7 +222,7 @@ public class BTree {
             this.promote = true;
             delete(node.getParent(), node.getParent().getKeys().get(position - 1));
 
-        } else if (position + 1 < node.getParent().getChildren().size()) {
+        } else if (position + 1 < node.getParent().getChildren().size()) { 
             Node adyacent = node.getParent().getChildren().get(position+1);
             for (int i = 0; i < node.getKeys().size(); i++) {
                 adyacent.addKey(node.getKeys().get(i));
@@ -232,8 +231,8 @@ public class BTree {
                 node.getChildren().get(i).setParent(adyacent);
                 adyacent.getChildren().add(node.getChildren().get(i));
             }
-            node.getParent().deleteChild(position);
             adyacent.addKey(node.getParent().getKeys().get(position));
+            node.getParent().deleteChild(position);
             adyacent.sortChildren();
             node.sortChildren();
             this.promote = true;
