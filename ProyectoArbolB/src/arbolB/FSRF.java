@@ -34,7 +34,7 @@ public class FSRF {
 
     public FSRF() {
         this.recordSize = 60;
-        this.source = new File("./test.txt");
+        this.source = new File("./neo.bin");
         this.RRN = 0;
         this.AvailList = new ArrayList();
         this.PersonList = new ArrayList();
@@ -252,9 +252,7 @@ public class FSRF {
     public boolean DeleteRecord(int key) {
 
         Node Temp = this.tree.search(tree.getRoot(), key);
-        System.out.println(key);
-        System.out.println("hola");
-        System.out.println(this.getRecordRNN(key));
+       
 
         if (Temp != null) {;
             int rrn = getRecordRNN(key);

@@ -437,13 +437,13 @@ public class GUI extends javax.swing.JFrame {
             //temp.getValueAt(this.jTable1.getSelectedRow(), 2);
             if (option == 0) {
                 key = (int) temp.getValueAt(selectedRow, 2);
-                String tempName = this.tf_newname.getText();
-                int tempID = Integer.parseInt(this.tf_newId.getText());
-                float tempSalary = Float.parseFloat(this.tf_newSalary.getText());
+                String tempName = this.tf_newnameM.getText();
+                int tempID = Integer.parseInt(this.tf_newIdM.getText());
+                float tempSalary = Float.parseFloat(this.tf_newSalaryM.getText());
                 String tempDate;
-                String temp_year = Integer.toString((int) this.spinner_year.getValue());
-                String temp_month = Integer.toString((int) this.spinner_month.getValue());
-                String temp_day = Integer.toString((int) this.spinner_day.getValue());
+                String temp_year = Integer.toString((int) this.spinner_yearM.getValue());
+                String temp_month = Integer.toString((int) this.spinner_monthM.getValue());
+                String temp_day = Integer.toString((int) this.spinner_dayM.getValue());
 
                 if (tempName.length() <= 39) {
                     while (tempName.length() < 40) {
