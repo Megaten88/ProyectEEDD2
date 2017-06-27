@@ -409,14 +409,14 @@ public class GUI extends javax.swing.JFrame {
                 key = (int) temp.getValueAt(selectedRow, 2);
                 System.out.println(key);
                 if (file.DeleteRecord(key)) {
-                    this.DataTable.setModel(temp);
                     temp.removeRow(selectedRow);
+                    this.DataTable.setModel(temp);
                     JOptionPane.showMessageDialog(rootPane, "Success!");
                 } else {
                     this.DataTable.setModel(temp);
                     JOptionPane.showMessageDialog(rootPane, "Something went wrong!");
                 }
-                file.DeleteRecord(key);               
+                file.DeleteRecord(key);
                 this.DataTable.setModel(temp);
             }
 
@@ -535,6 +535,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JButton jb_search;
     private javax.swing.JButton jb_ModifyRecord;
     private javax.swing.JButton jb_addRecords;
     private javax.swing.JButton jb_delete;
