@@ -6,8 +6,12 @@
 package arbolB;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,14 +106,25 @@ public class FSRF {
                         current_rrn++;
 
                     } else if (tempName.charAt(0) != '*') {
-                        tree.insert(tree.getRoot(), new Key(tempID, current_rrn));
-                        //this.IDIndex.add(new Key(tempID, current_rrn));
+                        
+                        if(!new File("./btree.btree").isFile()){
+                            tree.insert(tree.getRoot(), new Key(tempID, current_rrn));
+                        }
+                        
                         model.addRow(new Object[]{tempName, tempDate, tempID, tempSalary});
                         current_rrn++;
                     }
 
                 };
 
+                if(tree.getAllkeys().isEmpty()){
+                    System.out.println("here because load");
+                    cargarArbol();
+                }else{
+                    System.out.println("now here");
+                    guardarArbol();
+                }
+                
                 System.out.println(tree.getRoot().toString());
                 System.out.println(tree.getRoot().getChildren().toString() + " ");
 
@@ -306,6 +321,40 @@ public class FSRF {
             Logger.getLogger(FSRF.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+    public void guardarArbol() {
+        try {
+            File btreefile = new File("./btree.btree");
+            FileOutputStream ficheroSalida = new FileOutputStream(btreefile);
+            ObjectOutputStream objetoSalida = new ObjectOutputStream(ficheroSalida);
+            // se escriben dos objetos de la clase Persona
+            objetoSalida.writeObject(this.tree);
+            objetoSalida.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("¡El fichero no existe!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void cargarArbol() {
+        try {
+            File btreefile = new File("./btree.btree");
+            FileInputStream ficheroEntrada = new FileInputStream(btreefile);
+            ObjectInputStream objetoEntrada = new ObjectInputStream(ficheroEntrada);
+            // se leen dos objetos de la clase Persona
+            this.tree = (BTree) objetoEntrada.readObject();
+            // se cierra el flujo de objetos objetoEntrada
+            objetoEntrada.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        };
     }
 
 }
