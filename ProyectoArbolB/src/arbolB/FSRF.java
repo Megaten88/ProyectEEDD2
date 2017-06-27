@@ -34,7 +34,7 @@ public class FSRF {
 
     public FSRF() {
         this.recordSize = 60;
-        this.source = new File("./neo.txt");
+        this.source = new File("./neo.bin");
         this.RRN = 0;
         this.AvailList = new ArrayList();
         this.PersonList = new ArrayList();
@@ -249,7 +249,7 @@ public class FSRF {
                     file.writeUTF(tempDate);
                     file.writeInt(tempID);
                     file.writeFloat(tempSalary);
-                    tree.delete(tree.getRoot(), key);
+                    tree.delete(Temp, key);
                     this.AvailList.add(rrn);
 
                     return true;
