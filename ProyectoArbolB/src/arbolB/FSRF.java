@@ -34,7 +34,7 @@ public class FSRF {
 
     public FSRF() {
         this.recordSize = 60;
-        this.source = new File("./neo.bin");
+        this.source = new File("./test.txt");
         this.RRN = 0;
         this.AvailList = new ArrayList();
         this.PersonList = new ArrayList();
@@ -128,6 +128,7 @@ public class FSRF {
             int rrn = getRecordRNN(key);
             System.out.println(key);
             System.out.println(rrn);
+            
             if (rrn >= 0) {
                 try {
                     file.seek(recordSize * (rrn) + Integer.BYTES);
@@ -136,6 +137,8 @@ public class FSRF {
                     file.writeInt(temp.getID());
                     file.writeFloat(temp.getSalary());
                     tree.delete(tree.getRoot(), key);
+                    tree.insert(tree.getRoot(), new Key(temp.getID(),rrn));
+                   
                     return true;
                 } catch (IOException ex) {
                     Logger.getLogger(FSRF.class.getName()).log(Level.SEVERE, null, ex);
@@ -257,6 +260,7 @@ public class FSRF {
             int rrn = getRecordRNN(key);
             System.out.println(key);
             System.out.println(rrn);
+            
             if (rrn >= 0) {
                 try {
 
