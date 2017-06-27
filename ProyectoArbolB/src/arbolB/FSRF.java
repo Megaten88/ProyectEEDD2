@@ -192,6 +192,7 @@ public class FSRF {
                 file.writeInt(temp.getID());
                 file.writeFloat(temp.getSalary());
                 tree.insert(tree.getRoot(), new Key(temp.getID(), first_available_position));
+                guardarArbol();
                 file.seek(0);
                 file.writeInt(first_available_position);
 
@@ -298,7 +299,7 @@ public class FSRF {
                     file.writeFloat(tempSalary);
                     tree.delete(Temp, key);
                     this.AvailList.add(rrn);
-
+                    guardarArbol();
                     return true;
                 } catch (IOException ex) {
                     Logger.getLogger(FSRF.class.getName()).log(Level.SEVERE, null, ex);
