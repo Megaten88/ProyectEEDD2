@@ -143,6 +143,7 @@ public class FSRF {
             int rrn = getRecordRNN(key);
             System.out.println(key);
             System.out.println(rrn);
+            
             if (rrn >= 0) {
                 try {
                     file.seek(recordSize * (rrn) + Integer.BYTES);
@@ -151,6 +152,8 @@ public class FSRF {
                     file.writeInt(temp.getID());
                     file.writeFloat(temp.getSalary());
                     tree.delete(tree.getRoot(), key);
+                    tree.insert(tree.getRoot(), new Key(temp.getID(),rrn));
+                   
                     return true;
                 } catch (IOException ex) {
                     Logger.getLogger(FSRF.class.getName()).log(Level.SEVERE, null, ex);
@@ -264,14 +267,13 @@ public class FSRF {
     public boolean DeleteRecord(int key) {
 
         Node Temp = this.tree.search(tree.getRoot(), key);
-        System.out.println(key);
-        System.out.println("hola");
-        System.out.println(this.getRecordRNN(key));
+       
 
         if (Temp != null) {;
             int rrn = getRecordRNN(key);
             System.out.println(key);
             System.out.println(rrn);
+            
             if (rrn >= 0) {
                 try {
 
