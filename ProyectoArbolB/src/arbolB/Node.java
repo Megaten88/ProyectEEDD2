@@ -83,14 +83,15 @@ public class Node implements Serializable {
         }
     }
 
+    //Gets the position of the key in arrayList
     public int getPositionKey(Comparable key) {
         int position = 0;
         if (this.keys.size() > 0) {
-            for (int i = 0; i < this.getKeys().size();i++) {
-                if(this.keys.get(i).getKey().compareTo(key)==0){
+            for (int i = 0; i < this.getKeys().size(); i++) {
+                if (this.keys.get(i).getKey().compareTo(key) == 0) {
                     position = i;
                     break;
-                }else{
+                } else {
                     position = -1;
                 }
             }
@@ -98,6 +99,16 @@ public class Node implements Serializable {
         return position;
     }
 
+    // Looks for id in keys
+    public Key getKeyInNode(Comparable keyID) {
+        Key returnKey = null;
+        for (int i = 0; i < this.getKeys().size(); i++) {
+            if(this.getKeys().get(i).getKey().compareTo(keyID)==0){
+                returnKey = this.getKeys().get(i);
+            }
+        }
+        return returnKey;
+    }
     // Comparator made to work with Collections.sort(<lists>) makes nodes ordered
     public static Comparator<Node> comparator = new Comparator<Node>() {
         @Override

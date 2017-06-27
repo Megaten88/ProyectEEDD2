@@ -83,16 +83,12 @@ public class Main {
 
         /*  El delete funciona con una llave comparableee
          */
-        Comparable delete = 1;
+        Comparable delete = 0;
         /*Como obtiene el nodo donde está el registro par borrar, se itera sobre el nodo*/
         Node node = tree.search(tree.getRoot(), delete);
         Key keyDelete  = null;
         /*Se itera sobre el nodo obtenido para borrar*/
-        for (int i = 0; i < node.getKeys().size(); i++) {
-            if(node.getKeys().get(i).getKey().compareTo(delete)==0){
-                keyDelete = node.getKeys().get(i);
-            }
-        }
+        keyDelete = node.getKeyInNode(delete);
         tree.delete(node, delete);
         System.out.println("Deleted Key: " + keyDelete.toString2());
         System.out.println(tree.getRoot().toString());
