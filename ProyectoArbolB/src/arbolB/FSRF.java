@@ -120,6 +120,32 @@ public class FSRF {
 
     }
 
+    public boolean Modify(Person temp, int key) {
+
+        Node Temp = this.tree.search(tree.getRoot(), key);
+
+        if (Temp != null) {;
+            int rrn = getRecordRNN(key);
+            System.out.println(key);
+            System.out.println(rrn);
+            if (rrn >= 0) {
+                try {
+                    file.seek(recordSize * (rrn) + Integer.BYTES);
+                    file.writeUTF(String.copyValueOf(temp.getFull_name()));
+                    file.writeUTF(String.copyValueOf(temp.getBirth_date()));
+                    file.writeInt(temp.getID());
+                    file.writeFloat(temp.getSalary());
+                    tree.delete(tree.getRoot(), key);
+                    return true;
+                } catch (IOException ex) {
+                    Logger.getLogger(FSRF.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+        return false;
+    }
+
     public boolean Insert(Person temp) {
         if (this.AvailList.isEmpty()) {
             try {
