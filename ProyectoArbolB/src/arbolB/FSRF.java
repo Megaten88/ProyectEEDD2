@@ -121,7 +121,6 @@ public class FSRF {
     }
 
     public boolean Insert(Person temp) {
-        //boolean success = false;
         if (this.AvailList.isEmpty()) {
             try {
 
@@ -130,7 +129,9 @@ public class FSRF {
                 file.writeUTF(String.copyValueOf(temp.getBirth_date()));
                 file.writeInt(temp.getID());
                 file.writeFloat(temp.getSalary());
-
+                tree.insert(tree.getRoot(), new Key(temp.getID(), (int) ((file.length() - 2) / this.recordSize)));
+                file.seek(0);
+                file.writeInt((int) ((file.length() - 2) / this.recordSize));
                 return true;
 
             } catch (IOException ex) {
@@ -146,6 +147,9 @@ public class FSRF {
                 file.writeUTF(String.copyValueOf(temp.getBirth_date()));
                 file.writeInt(temp.getID());
                 file.writeFloat(temp.getSalary());
+                tree.insert(tree.getRoot(), new Key(temp.getID(), first_available_position));
+                file.seek(0);
+                file.writeInt(first_available_position);
 
                 return true;
             } catch (IOException ex) {
@@ -217,12 +221,12 @@ public class FSRF {
     }
 
     public boolean DeleteRecord(int key) {
-        
+
         Node Temp = this.tree.search(tree.getRoot(), key);
         System.out.println(key);
         System.out.println("hola");
         System.out.println(this.getRecordRNN(key));
-        
+
         if (Temp != null) {;
             int rrn = getRecordRNN(key);
             System.out.println(key);
