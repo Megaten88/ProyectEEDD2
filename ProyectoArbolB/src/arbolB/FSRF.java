@@ -151,7 +151,8 @@ public class FSRF {
                     file.writeUTF(String.copyValueOf(temp.getBirth_date()));
                     file.writeInt(temp.getID());
                     file.writeFloat(temp.getSalary());
-                    tree.delete(tree.getRoot(), key);
+                    tree.delete(Temp, key);
+                    guardarArbol();
                     tree.insert(tree.getRoot(), new Key(temp.getID(),rrn));
                    
                     return true;
@@ -268,8 +269,6 @@ public class FSRF {
     public boolean DeleteRecord(int key) {
 
         Node Temp = this.tree.search(tree.getRoot(), key);
-       
-
         if (Temp != null) {;
             int rrn = getRecordRNN(key);
             System.out.println(key);
