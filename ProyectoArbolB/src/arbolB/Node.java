@@ -16,11 +16,12 @@ import java.util.Comparator;
  */
 public class Node implements Serializable {
 
+    // Each node has an array of keys and an array of children
     private int order;
     private int level;
     private Node parent;
     private ArrayList<Node> children;
-    private ArrayList<Comparable> keys;
+    private ArrayList<Key> keys;
 
     public Node(int order) {
         this.order = order;
@@ -30,14 +31,7 @@ public class Node implements Serializable {
         this.children = new ArrayList();
     }
 
-    public Node(Node node) {
-        this.order = node.order;
-        this.level = node.level;
-        this.parent = node.parent;
-        this.keys = node.keys;
-        this.children = node.children;
-    }
-
+    // Getter and setters of attributes
     public int getOrder() {
         return order;
     }
@@ -73,30 +67,47 @@ public class Node implements Serializable {
         this.children = children;
     }
 
-    public ArrayList<Comparable> getKeys() {
+    public ArrayList<Key> getKeys() {
         return keys;
     }
 
-    public void setKeys(ArrayList<Comparable> keys) {
+    public void setKeys(ArrayList<Key> keys) {
         this.keys = keys;
     }
 
-    public void addKey(Comparable key) {
+    // Adds key and sorts
+    public void addKey(Key key) {
         if (this.keys.indexOf(key) == -1) {
             this.keys.add(key);
             sortKeys();
         }
     }
+
+    public int getPositionKey(Comparable key) {
+        int position = 0;
+        if (this.keys.size() > 0) {
+            for (int i = 0; i < this.getKeys().size();i++) {
+                if(this.keys.get(i).getKey().compareTo(key)==0){
+                    position = i;
+                    break;
+                }else{
+                    position = -1;
+                }
+            }
+        }
+        return position;
+    }
+
+    // Comparator made to work with Collections.sort(<lists>) makes nodes ordered
     public static Comparator<Node> comparator = new Comparator<Node>() {
         @Override
         public int compare(Node node1, Node node2) {
-            int key1 = (int) node1.getKeys().get(0);
-            int key2 = (int) node2.getKeys().get(0);
-            return key1 - key2;
+            return node1.getKeys().get(0).getKey().compareTo(node2.getKeys().get(0).getKey());
         }
 
     };
 
+    // Gets the median position for the key split
     public int getMedianPosition() {
         int position = 0;
         if (keys.size() % 2 != 0) {
@@ -107,54 +118,62 @@ public class Node implements Serializable {
         return position;
     }
 
+    // Checks if the arraylist of Keys is full.
     public boolean isFull() {
         return this.keys.size() == order;
     }
 
+    // Sorts all keys while the arraylist has elements.
     public void sortKeys() {
         if (!this.keys.isEmpty()) {
-            Collections.sort(keys);
+            Collections.sort(keys, comparatorKeys);
+        }
+    }
+    public static Comparator<Key> comparatorKeys = new Comparator<Key>() {
+        @Override
+        public int compare(Key o1, Key o2) {
+            return o1.getKey().compareTo(o2.getKey());
+        }
+
+    };
+
+    // Sorts children implementing the comparator on the Node class.
+    public void sortChildren() {
+        if (!this.children.isEmpty()) {
+            Collections.sort(children, comparator);
         }
     }
 
-    public void sortChildren() {
-       if(!this.children.isEmpty()){
-            Collections.sort(children, comparator);
-       }
-    }
-
-    public void deleteKey(int position) {
+    // Deletes key while position is valid
+    public Key deleteKey(int position) {
+        Key returnKey = null;
         if (position >= 0 && this.keys.size() > 0 && position < this.keys.size()) {
-            this.keys.remove(position);
+            returnKey = this.keys.remove(position);
             sortKeys();
         }
+        return returnKey;
     }
 
+    // Deletes Child on position
     public void deleteChild(int position) {
         for (int i = 0; i < this.children.size(); i++) {
-            if(this.children.get(i).getKeys().isEmpty()){
+            if (this.children.get(i).getKeys().isEmpty()) {
                 this.children.remove(i);
             }
         }
-        if (this.children.indexOf(position)!= -1) {
+        if (this.children.indexOf(position) != -1) {
             this.children.remove(position);
             sortChildren();
         }
     }
 
-    public void deleteChild(Node node) {
-        if (this.children.indexOf(node) != -1) {
-            this.children.remove(this.children.indexOf(node));
-            sortChildren();
-        }
-    }
-
+    // Splits the node in two parts and returns de right part
     public Node split() {
         int median = getMedianPosition();
-        Comparable keySplit = this.keys.get(median);
+        Key keySplit = this.keys.get(median);
         Node right = new Node(this.order);
-        ArrayList<Comparable> leftKeys = new ArrayList<Comparable>(this.getKeys().subList(0, median));
-        ArrayList<Comparable> rightKeys = new ArrayList<Comparable>(this.getKeys().subList(median + 1, this.getKeys().size()));
+        ArrayList<Key> leftKeys = new ArrayList<Key>(this.getKeys().subList(0, median));
+        ArrayList<Key> rightKeys = new ArrayList<Key>(this.getKeys().subList(median + 1, this.getKeys().size()));
         right.setKeys(rightKeys);
         this.setKeys(leftKeys);
         if (this.children.size() > 0) {
@@ -174,6 +193,7 @@ public class Node implements Serializable {
         return right;
     }
 
+    // Verifies if it can share to other node
     public boolean canShare() {
         if (this.order % 2 == 0) {
             return this.keys.size() > (this.order / 2) - 1;
@@ -182,6 +202,7 @@ public class Node implements Serializable {
         }
     }
 
+    // Verifies it it does not have children
     public boolean isLeaf() {
         return this.children.isEmpty();
     }

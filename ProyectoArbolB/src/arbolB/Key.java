@@ -6,22 +6,23 @@
 package arbolB;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  *
  * @author Agile PC
  */
-public class Key implements Comparable<Key>, Serializable{
-
-    private int key;
+public class Key implements Serializable{
+    // Key is our class that will act as an index
+    private Comparable key;
     private int rrn;
 
-    public Key(int key, int rrn) {
+    public Key(Comparable key, int rrn) {
         this.key = key;
         this.rrn = rrn;
     }
 
-    public int getKey() {
+    public Comparable getKey() {
         return key;
     }
 
@@ -36,13 +37,8 @@ public class Key implements Comparable<Key>, Serializable{
     public void setRrn(int rrn) {
         this.rrn = rrn;
     }
+    // Comparable is used to sort keys with class Collections
     
-    @Override
-    public int compareTo(Key o) {
-        int compareKey = o.getKey();
-        return this.key - compareKey;
-    }
-
     @Override
     public String toString() {
         return ""+key;

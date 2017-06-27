@@ -81,35 +81,24 @@ public class Main {
         System.out.println("------------COMPARISONS-------------");
         System.out.println("Todas las llaves: " + tree.getAllkeys());
 
-        /*  El delete funciona de la siguiente manera:
-            El int delete es el ID especificio de la persona, que se encuentra en el índice
-            Key returnKey se inicia en null, entonces por cada llave que se encuentra en el índice getAllKeys()
-            busca si kay un índice que tiene ese el id == delete y lo asigna a returnKey sino siempre se queda en nulo.
-            El índice siempre está ordenado en el árbol.
+        /*  El delete funciona con una llave comparableee
          */
-        int delete = 21;
-        Key returnKey = null;
-        for (Comparable key : tree.getAllkeys()) {
-            if (key instanceof Key) {
-                if (((Key) key).getKey() == delete) {
-                    returnKey = (Key) key;
-                    break;
-                } else if (((Key) key).getKey() > delete) {
-                    delete = -1;
-                    break;
-                }
+        Comparable delete = 1;
+        /*Como obtiene el nodo donde está el registro par borrar, se itera sobre el nodo*/
+        Node node = tree.search(tree.getRoot(), delete);
+        Key keyDelete  = null;
+        /*Se itera sobre el nodo obtenido para borrar*/
+        for (int i = 0; i < node.getKeys().size(); i++) {
+            if(node.getKeys().get(i).getKey().compareTo(delete)==0){
+                keyDelete = node.getKeys().get(i);
             }
         }
-        /*Sí cumple las dos condiciones para borrar, primero busca el nodo donde se encuentra la llave{search(tree.getRoot(),delete) regresa el nodo donde se encuentra la llave}
-        Con el método delete, se pone el nodo encontrado en el search yy el índice(returnKey) que se va a borrar*/
-        if (delete != -1 && returnKey != null) {
-            Node node = tree.search(tree.getRoot(), delete);
-            tree.delete(node, returnKey);
-            System.out.println(tree.getRoot().toString());
-            System.out.println(tree.getRoot().getChildren().toString());
-            System.out.print(tree.getRoot().getChildren().get(0).getChildren().toString() + " ");
-            System.out.print(tree.getRoot().getChildren().get(1).getChildren().toString() + " ");
-        }
+        tree.delete(node, delete);
+        System.out.println("Deleted Key: " + keyDelete.toString2());
+        System.out.println(tree.getRoot().toString());
+        System.out.println(tree.getRoot().getChildren().toString());
+        System.out.print(tree.getRoot().getChildren().get(0).getChildren().toString() + " ");
+        System.out.print(tree.getRoot().getChildren().get(1).getChildren().toString() + " ");
 //        System.out.print(tree.getRoot().getChildren().get(2).getChildren().toString() + " ");
 
 //        node = tree.search(tree.getRoot(), 0);

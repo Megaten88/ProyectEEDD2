@@ -69,7 +69,6 @@ public class FSRF {
                     }
                     
                     this.IDIndex.add(new Key(tempID,current_rrn));
-                    Collections.sort(this.IDIndex);
                     current_rrn++;
 
                 };
